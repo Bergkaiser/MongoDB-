@@ -1,0 +1,21 @@
+一、问题
+在安装了3.4的MongDB后，在网上随便下载了一个MongoVUE客户端，无法查看默认数据库local的集合，并且创建集合的时候出现了下面的问题
+Error in creating new Collection 
+未将对象引用设置到对象的实例。 
+Type: System.NullReferenceException 
+Stack: 在 MangoUI.ComNavTree.dbAddCollection_Click(Object sender, EventArgs e)
+在网上查了之后有的人说是MongoDB版本的原因，换成2就可以了，懒得换了，继续找方法最终，切换存储引擎，MongoDB在3.2之后默认的是wiredTiger引擎，而管理软件匹配的还是之前的引擎，所以无法使用，必须重置存在引擎。
+二、原因：
+在2015/3/17以前，MongoDB只有一个存储引擎，叫做MMAP，MongoDB3.0的推出使得MongoDB有了两个引擎：MMAPv1和WiredTiger。
+MMAPv1：适应于所有MongoDB版本，MongoDB3.0的默认引擎
+WiredTiger：仅支持64位MongoDB
+MongoDB两种引擎可以互相切换，我们可以在创建服务的时候指定引擎类型。
+三、解决步骤：
+重置存储引擎：
+cd D:\MongoDB\bin
+重置存储引擎语句
+mongod –storageEngine mmapv1 –dbpath D:\MongoDB\data2
+ 
+*注意的是：数据库位置必须重新指定，如原来的是D:\MongoDB\data 重置存储引擎的时候必须更换名称，D:\MongoDB\data2
+完成后客户端用命令use TestDB创建自己的数据库
+重新用MongoVUE链接TestDB
