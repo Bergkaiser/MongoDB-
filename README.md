@@ -1,0 +1,2 @@
+# MongoDB-ChangeEngineForMongoVUE
+MongoDB在用MongoVUE创建表时会提示“未将对象引用设置到对象的实例”，这是因为MongoVUE使用旧的MMAPv1引擎，而3.X版本的MongoDB默认为WiredTiger引擎，因此MongoDB启动服务时应更换引擎
